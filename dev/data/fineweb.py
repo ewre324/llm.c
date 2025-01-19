@@ -42,13 +42,10 @@ parser.add_argument("-s", "--shard_size", type=int, default=10**8, help="Size of
 args = parser.parse_args()
 
 # FineWeb has a few possible subsamples available
-assert args.version in {"10B", "100B"}, "version must be one of: 10B, 100B"
-assert args.type in {"edu", "classic"}, "type must be one of: edu, classic"
+assert args.version in {"10B"}, "version must be one of: 10B, 100B"
+assert args.type in {"classic"}, "type must be one of: edu, classic"
 directories = {
-    ("classic", "10B"): ("fineweb10B", "sample-10BT"),
-    ("classic", "100B"): ("fineweb100B", "sample-100BT"),
-    ("edu", "10B"): ("edu_fineweb10B", "sample-10BT"),
-    ("edu", "100B"): ("edu_fineweb100B", "sample-100BT")
+    ("classic", "10B"): ("gutenberg2145", "default"),
 }
 local_dir, remote_name = directories[(args.type, args.version)]
 
@@ -58,10 +55,10 @@ os.makedirs(DATA_CACHE_DIR, exist_ok=True)
 
 # download the dataset
 if args.type == "classic":
-    fw = load_dataset("HuggingFaceFW/fineweb", name=remote_name, split="train")
+    fw = load_dataset("ewre324/gutenberg2145", name=remote_name, split="train")
     name = "fineweb"
 elif args.type =="edu":
-    fw = load_dataset("HuggingFaceFW/fineweb-edu", name=remote_name, split="train")
+    fw = load_dataset("ewre324/gutenberg2145", name=remote_name, split="train")
     name = "edu_fineweb"
 
 def tokenize_llama(doc):
